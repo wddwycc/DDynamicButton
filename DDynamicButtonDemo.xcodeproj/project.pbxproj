@@ -13,6 +13,7 @@
 		C312B0901A1F1C1F005B27FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C312B08F1A1F1C1F005B27FA /* Images.xcassets */; };
 		C312B0931A1F1C1F005B27FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C312B0911A1F1C1F005B27FA /* LaunchScreen.xib */; };
 		C312B09F1A1F1C20005B27FA /* DDynamicButtonDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C312B09E1A1F1C20005B27FA /* DDynamicButtonDemoTests.swift */; };
+		C312B0A91A1F1F1F005B27FA /* DDynamicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C312B0A81A1F1F1F005B27FA /* DDynamicButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		C312B0981A1F1C20005B27FA /* DDynamicButtonDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDynamicButtonDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C312B09D1A1F1C20005B27FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C312B09E1A1F1C20005B27FA /* DDynamicButtonDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDynamicButtonDemoTests.swift; sourceTree = "<group>"; };
+		C312B0A81A1F1F1F005B27FA /* DDynamicButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DDynamicButton.swift; path = ../DDynamicButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		C312B0851A1F1C1F005B27FA /* DDynamicButtonDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C3CB2EA41A1F631900CF4165 /* Class */,
 				C312B0881A1F1C1F005B27FA /* AppDelegate.swift */,
 				C312B08A1A1F1C1F005B27FA /* ViewController.swift */,
 				C312B08C1A1F1C1F005B27FA /* Main.storyboard */,
@@ -110,6 +113,14 @@
 				C312B09D1A1F1C20005B27FA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C3CB2EA41A1F631900CF4165 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				C312B0A81A1F1F1F005B27FA /* DDynamicButton.swift */,
+			);
+			name = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +225,7 @@
 			files = (
 				C312B08B1A1F1C1F005B27FA /* ViewController.swift in Sources */,
 				C312B0891A1F1C1F005B27FA /* AppDelegate.swift in Sources */,
+				C312B0A91A1F1F1F005B27FA /* DDynamicButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +417,7 @@
 				C312B0A41A1F1C20005B27FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C312B0A51A1F1C20005B27FA /* Build configuration list for PBXNativeTarget "DDynamicButtonDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +426,7 @@
 				C312B0A71A1F1C20005B27FA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
