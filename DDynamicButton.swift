@@ -34,6 +34,10 @@ class DDynamicButton: UIControl {
     func setup(){
         iconLayer.frame = layer.bounds
         self.layer.addSublayer(iconLayer)
+        
+    }
+    var iconScaleFactor:CGFloat{
+        return self.frame.width > self.frame.height ? self.frame.height : self.frame.width
     }
 }
 
@@ -53,18 +57,18 @@ class DDynamicArrowButton:DDynamicButton{
     }
     var strokeLayer = CAShapeLayer()
     var upperPosition:CGPoint{
-        var x = pointxFactor*self.frame.width
-        var y = pointyFactor*self.frame.height
+        var x = pointxFactor*iconScaleFactor
+        var y = pointyFactor*iconScaleFactor
         return CGPointMake(x, y)
     }
     var netherPositon:CGPoint{
-        var x = pointxFactor*self.frame.width
-        var y = (CGFloat(1) - pointyFactor) * self.frame.height
+        var x = pointxFactor*iconScaleFactor
+        var y = (CGFloat(1) - pointyFactor) * iconScaleFactor
         return CGPointMake(x, y)
     }
     var vertexPosition:CGPoint{
-        var x = vertexyFactor * self.frame.width
-        var y = self.frame.height/2
+        var x = vertexyFactor * iconScaleFactor
+        var y = iconScaleFactor/2
         return CGPointMake(x, y)
     }
     override func setup() {
@@ -73,7 +77,6 @@ class DDynamicArrowButton:DDynamicButton{
     }
     func setDirection(direction:arrowDirection){
         var theValue = Double(direction.hashValue)/4
-        println(theValue)
         iconLayer.transform = CATransform3DMakeRotation(CGFloat(M_PI * theValue) ,0 ,0, 1)
     }
     func drawStrokes(){
@@ -124,19 +127,19 @@ class DDynamicMenuButton:DDynamicButton {
     let strokeHeightDistanceFactor:CGFloat = 0.28
     let strokeLengthFactor:CGFloat = 0.76
     var positionXLeft:CGFloat{
-        return self.frame.width * (1 - strokeLengthFactor)/CGFloat(2)
+        return iconScaleFactor * (1 - strokeLengthFactor)/CGFloat(2)
     }
     var positionXRight:CGFloat{
-        return self.frame.width * (1 + strokeLengthFactor)/CGFloat(2)
+        return iconScaleFactor * (1 + strokeLengthFactor)/CGFloat(2)
     }
     var positionY1:CGFloat{
-        return self.frame.height * (0.5 - strokeHeightDistanceFactor)
+        return iconScaleFactor * (0.5 - strokeHeightDistanceFactor)
     }
     var positionY2:CGFloat{
-        return self.frame.height/2
+        return iconScaleFactor/2
     }
     var positionY3:CGFloat{
-        return self.frame.height * (0.5 + strokeHeightDistanceFactor)
+        return iconScaleFactor * (0.5 + strokeHeightDistanceFactor)
     }
     var strokeLayerUp = CAShapeLayer()
     var strokeLayerMiddle = CAShapeLayer()
@@ -171,7 +174,7 @@ class DDynamicMenuButton:DDynamicButton {
     }
     override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
         var positionInView = touch.locationInView(self)
-        var positionOffset = (positionInView.x - self.frame.width/2) / (self.frame.width / 2)
+        var positionOffset = (positionInView.x - iconScaleFactor/2) / (iconScaleFactor / 2)
         var animeUp = CABasicAnimation(keyPath: "transform")
         var anglePurpose = CGFloat(M_PI/8) * positionOffset
         animeUp.toValue = NSValue(CATransform3D: CATransform3DMakeRotation(anglePurpose, 0, 0, 1))
@@ -215,6 +218,232 @@ class DDynamicMenuButton:DDynamicButton {
         }
     }
 }
+class DDynamicShareButton:DDynamicButton {
+    var upperLayer = CAShapeLayer()
+    var netherLayer = CAShapeLayer()
+    var arrowPointOne:CGPoint{
+        return CGPointMake(0.4 * iconScaleFactor, 0.25 * iconScaleFactor)
+    }
+    var arrowPointTwo:CGPoint{
+        return CGPointMake(0.5 * iconScaleFactor, 0.175 * iconScaleFactor)
+    }
+    var arrowPointThree:CGPoint{
+        return CGPointMake(0.6 * iconScaleFactor, 0.25 * iconScaleFactor)
+    }
+    var arrowPointFour:CGPoint{
+        return CGPointMake(0.5 * iconScaleFactor, 0.45 * iconScaleFactor)
+    }
+    
+    var rectPointOne:CGPoint{
+        return CGPointMake(0.35 * iconScaleFactor, 0.4 * iconScaleFactor)
+    }
+    var rectPointTwo:CGPoint{
+        return CGPointMake(0.2 * iconScaleFactor, 0.4 * iconScaleFactor)
+    }
+    var rectPointThree:CGPoint{
+        return CGPointMake(0.2 * iconScaleFactor, 0.8 * iconScaleFactor)
+    }
+    var rectPointFour:CGPoint{
+        return CGPointMake(0.8 * iconScaleFactor, 0.8 * iconScaleFactor)
+    }
+    var rectPointFive:CGPoint{
+        return CGPointMake(0.8 * iconScaleFactor, 0.4 * iconScaleFactor)
+    }
+    var rectPointSix:CGPoint{
+        return CGPointMake(0.65 * iconScaleFactor, 0.4 * iconScaleFactor)
+    }
+    override func setup() {
+        super.setup()
+        drawStrokes()
+    }
+    func drawStrokes(){
+        upperLayer.frame = iconLayer.bounds
+        upperLayer.opacity = 0.8
+        netherLayer.frame = iconLayer.bounds
+        netherLayer.opacity = 0.8
+        var upperPath = UIBezierPath()
+        upperPath.moveToPoint(arrowPointOne)
+        upperPath.addLineToPoint(arrowPointTwo)
+        upperPath.addLineToPoint(arrowPointThree)
+        upperPath.moveToPoint(CGPointMake(arrowPointTwo.x, arrowPointTwo.y + iconScaleFactor/10))
+        upperPath.addLineToPoint(arrowPointFour)
+        upperLayer.lineWidth = strokelineWidth
+        upperLayer.strokeColor = strokeColor
+        upperLayer.lineJoin = kCALineJoinRound
+        upperLayer.lineCap = kCALineCapRound
+        upperLayer.path = upperPath.CGPath
+        
+        var netherPath = UIBezierPath()
+        netherPath.moveToPoint(rectPointOne)
+        netherPath.addLineToPoint(rectPointTwo)
+        netherPath.addLineToPoint(rectPointThree)
+        netherPath.addLineToPoint(rectPointFour)
+        netherPath.addLineToPoint(rectPointFive)
+        netherPath.addLineToPoint(rectPointSix)
+        netherLayer.lineWidth = strokelineWidth
+        netherLayer.strokeColor = strokeColor
+        netherLayer.fillColor = nil
+        netherLayer.lineJoin = kCALineJoinRound
+        netherLayer.lineCap = kCALineCapSquare
+        netherLayer.path = netherPath.CGPath
+        iconLayer.addSublayer(upperLayer)
+        iconLayer.addSublayer(netherLayer)
+    }
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        animeOpacity.toValue = 1
+        var upperAnime = CABasicAnimation(keyPath: "transform")
+        var transformUpper = CATransform3DMakeRotation(CGFloat(M_PI/6), 1, 0, 0)
+        upperAnime.toValue = NSValue(CATransform3D: transformUpper)
+        var animePositionUpper = CABasicAnimation(keyPath: "position.y")
+        animePositionUpper.toValue = netherLayer.position.y + iconScaleFactor/10
+        var animeGroup1 = CAAnimationGroup()
+        animeGroup1.animations = [animeOpacity,upperAnime,animePositionUpper]
+        upperLayer.addAnimation(animeGroup1, forKey: "upperAnimeForward")
+        upperLayer.opacity = 1
+        upperLayer.position.y = netherLayer.position.y + self.bounds.width/10
+        upperLayer.transform = transformUpper
+        var netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
+        netherAnime1.toValue = 0.95
+        var netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
+        netherAnime2.toValue = 0.05
+        var animeGroup2 = CAAnimationGroup()
+        animeGroup2.animations  = [netherAnime1,netherAnime2,animeOpacity]
+        netherLayer.addAnimation(animeGroup2, forKey: "netherAnimeForward")
+        netherLayer.strokeStart = 0.05
+        netherLayer.strokeEnd = 0.95
+        netherLayer.opacity = 1
+        return super.beginTrackingWithTouch(touch, withEvent: event)
+    }
+    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+        super.endTrackingWithTouch(touch, withEvent: event)
+        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        animeOpacity.toValue = 0.8
+        var upperAnime = CABasicAnimation(keyPath: "transform")
+        var transformUpper = CATransform3DIdentity
+        upperAnime.toValue = NSValue(CATransform3D: transformUpper)
+        var animePositionUpper = CABasicAnimation(keyPath: "position.y")
+        animePositionUpper.toValue = netherLayer.position.y
+        var animeGroup1 = CAAnimationGroup()
+        animeGroup1.animations = [animeOpacity,upperAnime,animePositionUpper]
+        upperLayer.addAnimation(animeGroup1, forKey: "upperAnimeBackward")
+        upperLayer.opacity = 0.8
+        upperLayer.position.y = netherLayer.position.y
+        upperLayer.transform = transformUpper
+        var netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
+        netherAnime1.toValue = 1
+        var netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
+        netherAnime2.toValue = 0
+        var animeGroup2 = CAAnimationGroup()
+        animeGroup2.animations  = [netherAnime1,netherAnime2,animeOpacity]
+        netherLayer.addAnimation(animeGroup2, forKey: "netherAnimeBackward")
+        netherLayer.strokeStart = 0
+        netherLayer.strokeEnd = 1
+        netherLayer.opacity = 0.8
+    }
+}
+class DDynamicWriteButton:DDynamicButton{
+    var penLayer = CAShapeLayer()
+    var paperLayer = CAShapeLayer()
+    override func setup() {
+        super.setup()
+        drawStrokes()
+    }
+    
+    func drawStrokes(){
+        penLayer.opacity = 0.8
+        paperLayer.opacity = 0.8
+        paperLayer.frame = iconLayer.bounds
+        penLayer.frame = iconLayer.bounds
+        var paperPath = UIBezierPath()
+        paperPath.moveToPoint(CGPointMake(iconScaleFactor * 0.75, iconScaleFactor * 0.2))
+        paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.15, iconScaleFactor * 0.2))
+        paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.15, iconScaleFactor * 0.8))
+        paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.8, iconScaleFactor * 0.8))
+        paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.8, iconScaleFactor * 0.6))
+        paperLayer.strokeColor = strokeColor
+        paperLayer.lineWidth = strokelineWidth
+        paperLayer.lineCap = kCALineCapRound
+        paperLayer.lineJoin = kCALineJoinRound
+        paperLayer.fillColor = nil
+        paperLayer.path = paperPath.CGPath
+        var penPath = UIBezierPath()
+        penPath.moveToPoint(CGPointMake(iconScaleFactor * 0.9, iconScaleFactor * 0.25))
+        penPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.5, iconScaleFactor * 0.6))
+        penLayer.strokeColor = strokeColor
+        penLayer.lineWidth = strokelineWidth
+        penLayer.lineCap = kCALineCapRound
+        penLayer.lineJoin = kCALineJoinRound
+        penLayer.fillColor = nil
+        penLayer.path = penPath.CGPath
+        iconLayer.addSublayer(paperLayer)
+        iconLayer.addSublayer(penLayer)
+    }
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+        var anime = CABasicAnimation(keyPath: "transform")
+        var transformTMP = CATransform3DMakeRotation(CGFloat(-M_PI/6), 1, 0, 0)
+        anime.toValue = NSValue(CATransform3D: transformTMP)
+        penLayer.addAnimation(anime, forKey: "penForward")
+        penLayer.transform = transformTMP
+        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        animeOpacity.toValue = 1
+        penLayer.addAnimation(animeOpacity, forKey: "opacityOn")
+        penLayer.opacity = 1
+        paperLayer.addAnimation(animeOpacity, forKey: "opicityOn")
+        paperLayer.opacity = 1
+        return super.beginTrackingWithTouch(touch, withEvent: event)
+    }
+    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+        super.endTrackingWithTouch(touch, withEvent: event)
+        var anime = CABasicAnimation(keyPath: "transform")
+        var transformTMP = CATransform3DIdentity
+        anime.toValue = NSValue(CATransform3D: transformTMP)
+        penLayer.addAnimation(anime, forKey: "penBackward")
+        penLayer.transform = transformTMP
+        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        animeOpacity.toValue = 0.8
+        penLayer.addAnimation(animeOpacity, forKey: "opacityOff")
+        penLayer.opacity = 0.8
+        paperLayer.addAnimation(animeOpacity, forKey: "opacityOff")
+        paperLayer.opacity = 0.8
+    }
+}
+class DDynamicTextButton:DDynamicButton {
+    var textLayer = CATextLayer()
+    var text:String = "空缺"{
+        didSet{
+            textLayer.string = text
+        }
+    }
+    override func setup() {
+        super.setup()
+        drawText()
+    }
+    func drawText(){
+        textLayer.frame = iconLayer.bounds
+        textLayer.opacity = 0.6
+        textLayer.foregroundColor = strokeColor
+        textLayer.string = text
+        textLayer.fontSize = iconScaleFactor/2
+        textLayer.font = CGFontCreateWithFontName("ArialUnicodeMS")
+        textLayer.alignmentMode = kCAAlignmentCenter
+        textLayer.contentsScale = UIScreen.mainScreen().scale
+        iconLayer.addSublayer(textLayer)
+    }
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+        textLayer.opacity = 1
+        textLayer.transform = CATransform3DMakeRotation(CGFloat(M_PI/12), 1, 0, 0)
+        return super.beginTrackingWithTouch(touch, withEvent: event)
+    }
+    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+        super.endTrackingWithTouch(touch, withEvent: event)
+        textLayer.opacity = 0.6
+        textLayer.transform = CATransform3DIdentity
+    }
+    
+}
+
+
 
 
 

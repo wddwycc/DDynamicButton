@@ -13,10 +13,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
+        bigShow()
 
-        
     }
     
     func test(){
@@ -48,7 +46,12 @@ class ViewController: UIViewController {
         var btn9 = DDynamicArrowButton(frame: CGRectMake(60, 210, 50, 50))
         btn9.direction = arrowDirection.rightDown
         self.view.addSubview(btn9)
-
+        var btn10 = DDynamicShareButton(frame:CGRectMake(60, 60, 50, 50))
+        self.view.addSubview(btn10)
+        var btn11 = DDynamicWriteButton(frame:CGRectMake(110, 60, 50, 50))
+        self.view.addSubview(btn11)
+        var btn12 = DDynamicTextButton(frame:CGRectMake(10, 260, 60, 50))
+        self.view.addSubview(btn12)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
