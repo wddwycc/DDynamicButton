@@ -23,7 +23,7 @@ class DDynamicButton: UIControl {
         }
     }
     var iconLayer = CAShapeLayer()
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -57,18 +57,18 @@ class DDynamicArrowButton:DDynamicButton{
     }
     var strokeLayer = CAShapeLayer()
     var upperPosition:CGPoint{
-        var x = pointxFactor*iconScaleFactor
-        var y = pointyFactor*iconScaleFactor
+        let x = pointxFactor*iconScaleFactor
+        let y = pointyFactor*iconScaleFactor
         return CGPointMake(x, y)
     }
     var netherPositon:CGPoint{
-        var x = pointxFactor*iconScaleFactor
-        var y = (CGFloat(1) - pointyFactor) * iconScaleFactor
+        let x = pointxFactor*iconScaleFactor
+        let y = (CGFloat(1) - pointyFactor) * iconScaleFactor
         return CGPointMake(x, y)
     }
     var vertexPosition:CGPoint{
-        var x = vertexyFactor * iconScaleFactor
-        var y = iconScaleFactor/2
+        let x = vertexyFactor * iconScaleFactor
+        let y = iconScaleFactor/2
         return CGPointMake(x, y)
     }
     override func setup() {
@@ -76,12 +76,12 @@ class DDynamicArrowButton:DDynamicButton{
         drawStrokes()
     }
     func setDirection(direction:arrowDirection){
-        var theValue = Double(direction.hashValue)/4
+        let theValue = Double(direction.hashValue)/4
         iconLayer.transform = CATransform3DMakeRotation(CGFloat(M_PI * theValue) ,0 ,0, 1)
     }
     func drawStrokes(){
         strokeLayer.frame = iconLayer.bounds
-        var thePath = UIBezierPath()
+        let thePath = UIBezierPath()
         thePath.moveToPoint(upperPosition)
         thePath.addLineToPoint(vertexPosition)
         thePath.addLineToPoint(netherPositon)
@@ -94,28 +94,28 @@ class DDynamicArrowButton:DDynamicButton{
         strokeLayer.opacity = 0.8
         iconLayer.addSublayer(strokeLayer)
     }
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
-        var anime1 = CABasicAnimation(keyPath: "opacity")
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
+        let anime1 = CABasicAnimation(keyPath: "opacity")
         anime1.toValue = 1
         anime1.removedOnCompletion = false
-        var anime2 = CABasicAnimation(keyPath: "transform")
+        let anime2 = CABasicAnimation(keyPath: "transform")
         anime2.toValue = NSValue(CATransform3D: CATransform3DMakeRotation((rotateAngle * CGFloat(M_PI) / CGFloat(180)), 0, 1, 0))
         anime2.removedOnCompletion = false
-        var group = CAAnimationGroup()
+        let group = CAAnimationGroup()
         group.animations = [anime1,anime2]
         strokeLayer.addAnimation(group, forKey: "Transforword")
         strokeLayer.opacity = 1
         strokeLayer.transform = CATransform3DMakeRotation((rotateAngle * CGFloat(M_PI) / CGFloat(180)), 0, 1, 0)
         return super.beginTrackingWithTouch(touch, withEvent: event)
     }
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
-        var anime1 = CABasicAnimation(keyPath: "opacity")
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
+        let anime1 = CABasicAnimation(keyPath: "opacity")
         anime1.toValue = 0.8
         anime1.removedOnCompletion = false
-        var anime2 = CABasicAnimation(keyPath: "transform")
+        let anime2 = CABasicAnimation(keyPath: "transform")
         anime2.toValue = NSValue(CATransform3D: CATransform3DIdentity)
         anime2.removedOnCompletion = false
-        var group = CAAnimationGroup()
+        let group = CAAnimationGroup()
         group.animations = [anime1,anime2]
         strokeLayer.addAnimation(group, forKey: "TranBackword")
         strokeLayer.opacity = 0.8
@@ -149,13 +149,13 @@ class DDynamicMenuButton:DDynamicButton {
         drawStrokes()
     }
     func drawStrokes(){
-        var path1 = UIBezierPath()
+        let path1 = UIBezierPath()
         path1.moveToPoint(CGPointMake(positionXLeft, positionY1))
         path1.addLineToPoint(CGPointMake(positionXRight, positionY1))
-        var path2 = UIBezierPath()
+        let path2 = UIBezierPath()
         path2.moveToPoint(CGPointMake(positionXLeft, positionY2))
         path2.addLineToPoint(CGPointMake(positionXRight, positionY2))
-        var path3 = UIBezierPath()
+        let path3 = UIBezierPath()
         path3.moveToPoint(CGPointMake(positionXLeft, positionY3))
         path3.addLineToPoint(CGPointMake(positionXRight, positionY3))
         
@@ -172,23 +172,23 @@ class DDynamicMenuButton:DDynamicButton {
             iconLayer.addSublayer(pathLayer)
         }
     }
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
-        var positionInView = touch.locationInView(self)
-        var positionOffset = (positionInView.x - iconScaleFactor/2) / (iconScaleFactor / 2)
-        var animeUp = CABasicAnimation(keyPath: "transform")
-        var anglePurpose = CGFloat(M_PI/8) * positionOffset
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
+        let positionInView = touch.locationInView(self)
+        let positionOffset = (positionInView.x - iconScaleFactor/2) / (iconScaleFactor / 2)
+        let animeUp = CABasicAnimation(keyPath: "transform")
+        let anglePurpose = CGFloat(M_PI/8) * positionOffset
         animeUp.toValue = NSValue(CATransform3D: CATransform3DMakeRotation(anglePurpose, 0, 0, 1))
         strokeLayerUp.addAnimation(animeUp, forKey: "rotationForward")
         strokeLayerUp.transform = CATransform3DMakeRotation(anglePurpose, 0, 0, 1)
-        var animeDown = CABasicAnimation(keyPath: "transform")
+        let animeDown = CABasicAnimation(keyPath: "transform")
         animeDown.toValue = NSValue(CATransform3D: CATransform3DMakeRotation(-anglePurpose, 0, 0, 1))
         strokeLayerDown.addAnimation(animeDown, forKey: "rotationForward")
         strokeLayerDown.transform = CATransform3DMakeRotation(-anglePurpose, 0, 0, 1)
-        var animeMiddle = CABasicAnimation(keyPath: "position")
+        let animeMiddle = CABasicAnimation(keyPath: "position")
         animeMiddle.toValue = NSValue(CGPoint: CGPointMake(strokeLayerUp.position.x - positionOffset * 5, strokeLayerMiddle.position.y))
         strokeLayerMiddle.addAnimation(animeMiddle, forKey: "positionForward")
         strokeLayerMiddle.position = CGPointMake(strokeLayerUp.position.x - positionOffset * 5, strokeLayerMiddle.position.y)
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 1
         let layerArray = [strokeLayerUp,strokeLayerMiddle,strokeLayerDown]
         for pathLayer in layerArray{
@@ -197,19 +197,19 @@ class DDynamicMenuButton:DDynamicButton {
         }
         return super.beginTrackingWithTouch(touch, withEvent: event)
     }
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         super.endTrackingWithTouch(touch, withEvent: event)
-        var animeRotation = CABasicAnimation(keyPath: "transform")
+        let animeRotation = CABasicAnimation(keyPath: "transform")
         animeRotation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
         strokeLayerUp.addAnimation(animeRotation, forKey: "rotationBackward")
         strokeLayerUp.transform = CATransform3DIdentity
         strokeLayerDown.addAnimation(animeRotation, forKey: "rotationBackward")
         strokeLayerDown.transform = CATransform3DIdentity
-        var animePosition = CABasicAnimation(keyPath: "position.x")
+        let animePosition = CABasicAnimation(keyPath: "position.x")
         animePosition.toValue = strokeLayerUp.position.x
         strokeLayerMiddle.addAnimation(animePosition, forKey: "positionBackward")
         strokeLayerMiddle.position.x = strokeLayerUp.position.x
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 0.8
         let layerArray = [strokeLayerUp,strokeLayerMiddle,strokeLayerDown]
         for pathLayer in layerArray{
@@ -261,7 +261,7 @@ class DDynamicShareButton:DDynamicButton {
         upperLayer.opacity = 0.8
         netherLayer.frame = iconLayer.bounds
         netherLayer.opacity = 0.8
-        var upperPath = UIBezierPath()
+        let upperPath = UIBezierPath()
         upperPath.moveToPoint(arrowPointOne)
         upperPath.addLineToPoint(arrowPointTwo)
         upperPath.addLineToPoint(arrowPointThree)
@@ -273,7 +273,7 @@ class DDynamicShareButton:DDynamicButton {
         upperLayer.lineCap = kCALineCapRound
         upperLayer.path = upperPath.CGPath
         
-        var netherPath = UIBezierPath()
+        let netherPath = UIBezierPath()
         netherPath.moveToPoint(rectPointOne)
         netherPath.addLineToPoint(rectPointTwo)
         netherPath.addLineToPoint(rectPointThree)
@@ -289,25 +289,25 @@ class DDynamicShareButton:DDynamicButton {
         iconLayer.addSublayer(upperLayer)
         iconLayer.addSublayer(netherLayer)
     }
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 1
-        var upperAnime = CABasicAnimation(keyPath: "transform")
-        var transformUpper = CATransform3DMakeRotation(CGFloat(M_PI/6), 1, 0, 0)
+        let upperAnime = CABasicAnimation(keyPath: "transform")
+        let transformUpper = CATransform3DMakeRotation(CGFloat(M_PI/6), 1, 0, 0)
         upperAnime.toValue = NSValue(CATransform3D: transformUpper)
-        var animePositionUpper = CABasicAnimation(keyPath: "position.y")
+        let animePositionUpper = CABasicAnimation(keyPath: "position.y")
         animePositionUpper.toValue = netherLayer.position.y + iconScaleFactor/10
-        var animeGroup1 = CAAnimationGroup()
+        let animeGroup1 = CAAnimationGroup()
         animeGroup1.animations = [animeOpacity,upperAnime,animePositionUpper]
         upperLayer.addAnimation(animeGroup1, forKey: "upperAnimeForward")
         upperLayer.opacity = 1
         upperLayer.position.y = netherLayer.position.y + self.bounds.width/10
         upperLayer.transform = transformUpper
-        var netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
+        let netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
         netherAnime1.toValue = 0.95
-        var netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
+        let netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
         netherAnime2.toValue = 0.05
-        var animeGroup2 = CAAnimationGroup()
+        let animeGroup2 = CAAnimationGroup()
         animeGroup2.animations  = [netherAnime1,netherAnime2,animeOpacity]
         netherLayer.addAnimation(animeGroup2, forKey: "netherAnimeForward")
         netherLayer.strokeStart = 0.05
@@ -315,26 +315,26 @@ class DDynamicShareButton:DDynamicButton {
         netherLayer.opacity = 1
         return super.beginTrackingWithTouch(touch, withEvent: event)
     }
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         super.endTrackingWithTouch(touch, withEvent: event)
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 0.8
-        var upperAnime = CABasicAnimation(keyPath: "transform")
-        var transformUpper = CATransform3DIdentity
+        let upperAnime = CABasicAnimation(keyPath: "transform")
+        let transformUpper = CATransform3DIdentity
         upperAnime.toValue = NSValue(CATransform3D: transformUpper)
-        var animePositionUpper = CABasicAnimation(keyPath: "position.y")
+        let animePositionUpper = CABasicAnimation(keyPath: "position.y")
         animePositionUpper.toValue = netherLayer.position.y
-        var animeGroup1 = CAAnimationGroup()
+        let animeGroup1 = CAAnimationGroup()
         animeGroup1.animations = [animeOpacity,upperAnime,animePositionUpper]
         upperLayer.addAnimation(animeGroup1, forKey: "upperAnimeBackward")
         upperLayer.opacity = 0.8
         upperLayer.position.y = netherLayer.position.y
         upperLayer.transform = transformUpper
-        var netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
+        let netherAnime1 = CABasicAnimation(keyPath: "strokeEnd")
         netherAnime1.toValue = 1
-        var netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
+        let netherAnime2 = CABasicAnimation(keyPath: "strokeStart")
         netherAnime2.toValue = 0
-        var animeGroup2 = CAAnimationGroup()
+        let animeGroup2 = CAAnimationGroup()
         animeGroup2.animations  = [netherAnime1,netherAnime2,animeOpacity]
         netherLayer.addAnimation(animeGroup2, forKey: "netherAnimeBackward")
         netherLayer.strokeStart = 0
@@ -355,7 +355,7 @@ class DDynamicWriteButton:DDynamicButton{
         paperLayer.opacity = 0.8
         paperLayer.frame = iconLayer.bounds
         penLayer.frame = iconLayer.bounds
-        var paperPath = UIBezierPath()
+        let paperPath = UIBezierPath()
         paperPath.moveToPoint(CGPointMake(iconScaleFactor * 0.75, iconScaleFactor * 0.2))
         paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.15, iconScaleFactor * 0.2))
         paperPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.15, iconScaleFactor * 0.8))
@@ -367,7 +367,7 @@ class DDynamicWriteButton:DDynamicButton{
         paperLayer.lineJoin = kCALineJoinRound
         paperLayer.fillColor = nil
         paperLayer.path = paperPath.CGPath
-        var penPath = UIBezierPath()
+        let penPath = UIBezierPath()
         penPath.moveToPoint(CGPointMake(iconScaleFactor * 0.9, iconScaleFactor * 0.25))
         penPath.addLineToPoint(CGPointMake(iconScaleFactor * 0.5, iconScaleFactor * 0.6))
         penLayer.strokeColor = strokeColor
@@ -379,13 +379,13 @@ class DDynamicWriteButton:DDynamicButton{
         iconLayer.addSublayer(paperLayer)
         iconLayer.addSublayer(penLayer)
     }
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
-        var anime = CABasicAnimation(keyPath: "transform")
-        var transformTMP = CATransform3DMakeRotation(CGFloat(-M_PI/6), 1, 0, 0)
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
+        let anime = CABasicAnimation(keyPath: "transform")
+        let transformTMP = CATransform3DMakeRotation(CGFloat(-M_PI/6), 1, 0, 0)
         anime.toValue = NSValue(CATransform3D: transformTMP)
         penLayer.addAnimation(anime, forKey: "penForward")
         penLayer.transform = transformTMP
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 1
         penLayer.addAnimation(animeOpacity, forKey: "opacityOn")
         penLayer.opacity = 1
@@ -393,14 +393,14 @@ class DDynamicWriteButton:DDynamicButton{
         paperLayer.opacity = 1
         return super.beginTrackingWithTouch(touch, withEvent: event)
     }
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         super.endTrackingWithTouch(touch, withEvent: event)
-        var anime = CABasicAnimation(keyPath: "transform")
-        var transformTMP = CATransform3DIdentity
+        let anime = CABasicAnimation(keyPath: "transform")
+        let transformTMP = CATransform3DIdentity
         anime.toValue = NSValue(CATransform3D: transformTMP)
         penLayer.addAnimation(anime, forKey: "penBackward")
         penLayer.transform = transformTMP
-        var animeOpacity = CABasicAnimation(keyPath: "opacity")
+        let animeOpacity = CABasicAnimation(keyPath: "opacity")
         animeOpacity.toValue = 0.8
         penLayer.addAnimation(animeOpacity, forKey: "opacityOff")
         penLayer.opacity = 0.8
@@ -430,12 +430,12 @@ class DDynamicTextButton:DDynamicButton {
         textLayer.contentsScale = UIScreen.mainScreen().scale
         iconLayer.addSublayer(textLayer)
     }
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         textLayer.opacity = 1
         textLayer.transform = CATransform3DMakeRotation(CGFloat(M_PI/12), 1, 0, 0)
         return super.beginTrackingWithTouch(touch, withEvent: event)
     }
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         super.endTrackingWithTouch(touch, withEvent: event)
         textLayer.opacity = 0.6
         textLayer.transform = CATransform3DIdentity
